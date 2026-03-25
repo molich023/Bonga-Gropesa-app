@@ -1,0 +1,23 @@
+[build]
+  command = "flutter build web"
+  publish = "build/web"
+  base = "/"
+
+[build.environment]
+  FLUTTER_VERSION = "3.10.0"
+
+[[redirects]]
+  from = "/chat/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/rewards/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline';"
