@@ -1,0 +1,10 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.5                  # For API calls
+  matrix: ^0.20.0                # Matrix SDK for chat
+  web3dart: ^2.3.5               # For future Gropesa wallet integration
+  shared_preferences: ^2.1.0     # Local storage
+  flutter_localizations:         # Kiswahili/English support
+    sdk: flutter
+  intl: ^0.18.1
