@@ -9,4 +9,5 @@ dependencies:
   firebase_auth: ^4.7.0    # Auth
   cloud_firestore: ^4.8.0  # KYC submissions
   provider: ^6.0.5          # State management
+  webview_flutter: ^4.2.2
   intl: ^0.18.1             # Date formatting
