@@ -1,0 +1,43 @@
+import React, { useState, useEffect } from 'react';
+import { getFirestore, collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+
+export default function AdminDashboard() {
+  const [submissions, setSubmissions] = useState([]);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      const q = query(collection(db, 'kycSubmissions'), where('status', '==', 'pending'));
+      const snapshot = await getDocs(q);
+      const subs = await Promise.all(snapshot.docs.map(async (doc) => {
+        const data = doc.data();
+        const idPhotoURL = await getDownloadURL(ref(storage, data.idPhotoPath));
+        const selfieURL = await getDownloadURL(ref(storage, data.selfiePath));
+        return { id: doc.id, ...data, idPhotoURL, selfieURL };
+      }));
+      setSubmissions(subs);
+    };
+    fetchSubmissions();
+  }, []);
+
+  const handleApprove = async (id) => {
+    await updateDoc(doc(db, 'kycSubmissions', id), { status: 'approved' });
+    alert('KYC approved!');
+  };
+
+  return (
+    <div>
+      <h1>GroPesa KYC Admin Dashboard</h1>
+      {submissions.map((sub) => (
+        <div key={sub.id}>
+          <p>ID: {sub.idNumber}</p>
+          <img src={sub.idPhotoURL} alt="ID Photo" width="200" />
+          <img src={sub.selfieURL} alt="Selfie" width="200" />
+          <button onClick={() => handleApprove(sub.id)}>Approve</button>
+        </div>
+      ))}
+    </div>
+  );
+}
