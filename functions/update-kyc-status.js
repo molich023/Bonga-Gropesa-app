@@ -1,4 +1,15 @@
 // functions/update-kyc-status.js
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 requests per window
+});
+
+exports.handler = limiter(async (event) => {
+  // Your existing logic...
+});
+// functions/update-kyc-status.js
 const { Resend } = require('@resend/resend-js');
 const resend = new Resend('YOUR_RESEND_API_KEY');
 
